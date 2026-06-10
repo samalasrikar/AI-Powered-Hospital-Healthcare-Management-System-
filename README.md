@@ -34,3 +34,36 @@ The system features an AI Assistant available across multiple user roles:
 
 ## 🏗 System Architecture Diagram
 
+
+## 🧩 Backend Setup (Node.js + Express)
+
+A backend service is initialized in `/backend` with environment config, MongoDB connection, and centralized error handling.
+
+### Backend Folder Structure
+
+```text
+backend/
+├── src/
+│   ├── app.js
+│   ├── server.js
+│   ├── config/
+│   │   ├── db.js
+│   │   └── env.js
+│   ├── middlewares/
+│   │   └── errorHandler.js
+│   └── routes/
+│       └── index.js
+├── .env.example
+└── package.json
+```
+
+### Run Backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npm start
+```
+
+Health check endpoint: `GET /api/health`
