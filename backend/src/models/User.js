@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const roles = [
   'SuperAdmin',
@@ -29,7 +30,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
+      match: [/^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, 'Please provide a valid email address'],
     },
     password: {
       type: String,
@@ -50,6 +51,7 @@ const userSchema = new mongoose.Schema(
     },
     hospitalId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'Hospital',
       required() {
         return this.role !== 'SuperAdmin';
       },
@@ -59,5 +61,17 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre('save', async function hashPassword() {
+  if (!this.isModified('password')) {
+    return;
+  }
+
+  if (/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(this.password)) {
+    return;
+  }
+
+  this.password = await bcrypt.hash(this.password, 10);
+});
 
 module.exports = mongoose.model('User', userSchema);
