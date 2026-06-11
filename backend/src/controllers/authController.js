@@ -3,6 +3,11 @@ const User = require('../models/User');
 const register = async (req, res, next) => {
   try {
     const { fullName, email, password, hospitalId } = req.body;
+    console.log({
+      fullName,
+      email,
+      password,
+    });
 
     if (!fullName || !email || !password) {
       return res.status(400).json({
