@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',
       required() {
-        return this.role !== 'SuperAdmin';
+        return !['SuperAdmin', 'Patient'].includes(this.role);
       },
     },
   },
