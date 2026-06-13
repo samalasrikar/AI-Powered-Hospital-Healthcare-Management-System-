@@ -2,6 +2,7 @@ const express = require('express');
 const uploadRoutes = require('./uploadRoutes');
 const authRoutes = require('./authRoutes');
 const emrViewerRoutes = require('./emrViewerRoutes');
+const labReportsViewerRoutes = require('./labReportsViewerRoutes');
 const router = express.Router();
 
 
@@ -23,4 +24,5 @@ router.use('/emr-search', emrSearchRoutes);
 
 router.use('/emr-viewer', emrViewerRoutes);
 
+router.use('/lab-reports', labReportsViewerRoutes);
 module.exports = router;
