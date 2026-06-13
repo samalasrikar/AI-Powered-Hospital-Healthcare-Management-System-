@@ -4,6 +4,9 @@ const authRoutes = require('./authRoutes');
 
 const router = express.Router();
 
+const authRoutes = require('./authRoutes');
+const emrSearchRoutes = require('./emrSearchRoutes');
+
 router.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -14,5 +17,6 @@ router.get('/health', (req, res) => {
 // Register feature routes
 router.use('/upload', uploadRoutes);
 router.use('/auth', authRoutes);
+router.use('/emr-search', emrSearchRoutes);
 
 module.exports = router;
