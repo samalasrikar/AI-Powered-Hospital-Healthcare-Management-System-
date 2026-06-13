@@ -8,6 +8,7 @@ const patientHistoryRoutes = require('./patientHistoryRoutes');
 const emrViewerRoutes = require('./emrViewerRoutes');
 const labReportsViewerRoutes = require('./labReportsViewerRoutes');
 const labDashboardRoutes = require('./labDashboardRoutes');
+const labWorkflowRoutes = require('./labWorkflowRoutes');
 const router = express.Router();
 
 router.get('/health', (req, res) => {
@@ -27,4 +28,6 @@ router.use('/patient-history', patientHistoryRoutes);
 router.use('/emr-viewer', emrViewerRoutes);
 router.use('/lab-reports', labReportsViewerRoutes);
 router.use('/lab-dashboard', labDashboardRoutes);
+router.use('/lab-workflow', labWorkflowRoutes);
+
 module.exports = router;
