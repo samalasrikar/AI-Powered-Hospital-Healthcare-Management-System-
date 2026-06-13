@@ -1,6 +1,8 @@
 const express = require('express');
 const uploadRoutes = require('./uploadRoutes');
 const authRoutes = require('./authRoutes');
+
+const labReportUploadRoutes = require('./labReportUploadRoutes');
 const emrSearchRoutes = require('./emrSearchRoutes');
 const patientHistoryRoutes = require('./patientHistoryRoutes');
 const emrViewerRoutes = require('./emrViewerRoutes');
@@ -20,6 +22,7 @@ router.get('/health', (req, res) => {
 router.use('/upload', uploadRoutes);
 router.use('/auth', authRoutes);
 router.use('/emr-search', emrSearchRoutes);
+router.use('/lab-report-upload', labReportUploadRoutes);
 router.use('/patient-history', patientHistoryRoutes);
 router.use('/emr-viewer', emrViewerRoutes);
 router.use('/lab-reports', labReportsViewerRoutes);
