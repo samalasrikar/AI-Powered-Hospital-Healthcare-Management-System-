@@ -1,15 +1,11 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const logActivity = require('../utils/activityLogger');
 
 const register = async (req, res, next) => {
   try {
     const { fullName, email, password, hospitalId } = req.body;
-    console.log({
-      fullName,
-      email,
-      password,
-    });
 
     if (!fullName || !email || !password) {
       return res.status(400).json({
@@ -18,14 +14,12 @@ const register = async (req, res, next) => {
       });
     }
 
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message:
-          'Password must contain uppercase, lowercase, number and special character',
+        message: 'Password must contain uppercase, lowercase, number and special character',
       });
     }
 
@@ -42,7 +36,7 @@ const register = async (req, res, next) => {
 
     const user = await User.create({
       fullName,
-      email,
+      email: email.toLowerCase(),
       password,
       role: 'Patient',
       hospitalId,
@@ -62,6 +56,7 @@ const register = async (req, res, next) => {
     next(error);
   }
 };
+
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -84,10 +79,7 @@ const login = async (req, res, next) => {
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -117,6 +109,16 @@ const login = async (req, res, next) => {
         expiresIn: '7d',
       }
     );
+
+    await logActivity({
+      userId: user._id,
+      action: "LOGIN",
+      module: "Auth",
+      ipAddress: req.ip,
+      metadata: {
+        email: user.email,
+      },
+    });
 
     return res.status(200).json({
       success: true,

@@ -16,7 +16,7 @@ const logActivity = async ({
       metadata,
     });
   } catch (error) {
-    console.error("Activity Log Error:", error.message);
+    console.error("Audit Log Error:", error.message);
   }
 };
 
