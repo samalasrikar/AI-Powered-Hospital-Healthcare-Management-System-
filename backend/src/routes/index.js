@@ -13,7 +13,7 @@ const labReportsViewerRoutes = require('./labReportsViewerRoutes');
 const labDashboardRoutes = require('./labDashboardRoutes');
 const labWorkflowRoutes = require('./labWorkflowRoutes');
 const expiryTrackingRoutes = require('./expiryTrackingRoutes');
-
+const aiRoutes = require('./aiRoutes');
 const router = express.Router();
 
 router.get('/health', (req, res) => {
@@ -38,5 +38,5 @@ router.use('/lab-reports', labReportsViewerRoutes);
 router.use('/lab-dashboard', labDashboardRoutes);
 router.use('/lab-workflow', labWorkflowRoutes);
 router.use('/expiry-tracking', expiryTrackingRoutes);
-
+router.use('/ai', aiRoutes);
 module.exports = router;
