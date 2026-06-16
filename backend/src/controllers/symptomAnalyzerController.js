@@ -40,4 +40,4 @@ Add this disclaimer:
 
 module.exports = {
   analyzeSymptoms,
-};
+};  
