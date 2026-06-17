@@ -2,47 +2,44 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const [query, setQuery] = useState("");
-  const [result, setResult] = useState(null);
+  const [report, setReport] = useState("");
+  const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!query.trim()) {
-      alert("Please enter your appointment request.");
+    if (!report.trim()) {
+      alert("Please enter a medical report.");
       return;
     }
 
     setLoading(true);
-    setResult(null);
+    setSummary("");
 
     try {
-      const response = await fetch(
-        `${API_URL}/appointment-assistant`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/emr-summarizer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          report,
+        }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        setResult(data);
+        setSummary(data.summary || "No summary returned.");
       } else {
-        alert(data.message || "Failed to get suggestions.");
+        setSummary(data.message || "Failed to generate summary.");
       }
     } catch (error) {
       console.error(error);
-      alert("Error connecting to server.");
+      setSummary("Error connecting to server.");
     } finally {
       setLoading(false);
     }
@@ -50,39 +47,25 @@ function App() {
 
   return (
     <div className="container">
-      <h1>AI Appointment Assistant</h1>
+      <h1>AI EMR Summarizer</h1>
 
       <form onSubmit={handleSubmit}>
         <textarea
-          rows="5"
-          placeholder="Example: I need a heart specialist next week"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          rows="10"
+          placeholder="Paste medical report here..."
+          value={report}
+          onChange={(e) => setReport(e.target.value)}
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Finding..." : "Find Appointment"}
+          {loading ? "Generating..." : "Generate Summary"}
         </button>
       </form>
 
-      {result && (
+      {summary && (
         <div className="summary-box">
-          <h2>Suggested Department</h2>
-          <p>{result.department}</p>
-
-          <h2>Available Doctors</h2>
-          <ul>
-            {result.doctors.map((doctor, index) => (
-              <li key={index}>{doctor}</li>
-            ))}
-          </ul>
-
-          <h2>Available Slots</h2>
-          <ul>
-            {result.slots.map((slot, index) => (
-              <li key={index}>{slot}</li>
-            ))}
-          </ul>
+          <h2>Summary</h2>
+          <p>{summary}</p>
         </div>
       )}
     </div>
