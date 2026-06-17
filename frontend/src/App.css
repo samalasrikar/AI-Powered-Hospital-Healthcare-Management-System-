@@ -6,7 +6,44 @@
 }
 
 /* ==========================================================================
-   1. Department Performance Feature (feature/department-performance-reports)
+   1. Report Export System (feature/report-export-system)
+   ========================================================================== */
+.export-container-center {
+  text-align: center;
+}
+
+.report-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.button-group {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Specific class to prevent overriding general dashboard buttons */
+.btn-export {
+  padding: 12px 24px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.btn-export:hover {
+  background: #1d4ed8;
+}
+
+/* ==========================================================================
+   2. Department Performance Feature
    ========================================================================== */
 .department-grid {
   display: grid;
@@ -20,7 +57,6 @@
   padding: 20px;
 }
 
-/* Styled specifically to avoid collision with revenue charts */
 .department-chart-box {
   margin-top: 30px;
   border: 1px solid #ddd;
@@ -54,7 +90,7 @@
 }
 
 /* ==========================================================================
-   2. Bed Occupancy & Revenue Dashboard Components (develop)
+   3. Bed Occupancy & Revenue Dashboard Components
    ========================================================================== */
 
 /* --- Bed Occupancy Component --- */

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  // --- 1. Department Performance Data (feature branch) ---
+  // --- 1. Department Performance Data ---
   const departments = [
     {
       name: "Cardiology",
@@ -24,13 +24,13 @@ function App() {
     },
   ];
 
-  // --- 2. Bed Occupancy Logic (develop branch) ---
+  // --- 2. Bed Occupancy Logic ---
   const totalBeds = 200;
   const occupiedBeds = 164;
   const availableBeds = totalBeds - occupiedBeds;
   const occupancyPercentage = Math.round((occupiedBeds / totalBeds) * 100);
 
-  // --- 3. Revenue Data Logic (develop branch) ---
+  // --- 3. Revenue Data Logic ---
   const revenueData = {
     Daily: "₹25,000",
     Weekly: "₹1,75,000",
@@ -39,14 +39,43 @@ function App() {
 
   const [selected, setSelected] = useState("Daily");
 
+  // --- 4. Report Export Action Handlers (feature branch) ---
+  const exportPDF = () => {
+    alert("PDF Report Downloaded");
+  };
+
+  const exportExcel = () => {
+    alert("Excel Report Downloaded");
+  };
+
   return (
     <div className="container">
       <h1>Hospital Management Dashboard</h1>
 
-      {/* --- Section 1: Department Performance Reports --- */}
+      {/* --- Section 1: Report Export System --- */}
+      <div className="section-block export-container-center" style={{ marginBottom: "50px" }}>
+        <div className="report-card">
+          <h2>Hospital Analytics Export Utility</h2>
+          <p><strong>Total Active Departments:</strong> {departments.length}</p>
+          <p><strong>Current Selected Revenue Track:</strong> {revenueData[selected]} ({selected})</p>
+          <p><strong>Live Bed Occupancy Rate:</strong> {occupancyPercentage}%</p>
+          
+          <div className="button-group">
+            <button className="btn-export" onClick={exportPDF}>
+              Export PDF
+            </button>
+            <button className="btn-export" onClick={exportExcel}>
+              Export Excel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr style={{ border: "0", borderTop: "1px solid #ddd", margin: "40px 0" }} />
+
+      {/* --- Section 2: Department Performance Reports --- */}
       <div className="section-block" style={{ marginBottom: "50px" }}>
         <h2>Department Performance Reports</h2>
-
         <div className="department-grid">
           {departments.map((dept, index) => (
             <div className="department-card" key={index}>
@@ -58,7 +87,6 @@ function App() {
           ))}
         </div>
 
-        {/* Updated classes to avoid styling overlap with the revenue chart */}
         <div className="department-chart-box">
           <h2>Department Comparison</h2>
           <div className="dept-bar cardiology">Cardiology</div>
@@ -69,7 +97,7 @@ function App() {
 
       <hr style={{ border: "0", borderTop: "1px solid #ddd", margin: "40px 0" }} />
 
-      {/* --- Section 2: Revenue Analytics --- */}
+      {/* --- Section 3: Revenue Analytics --- */}
       <div className="section-block" style={{ marginBottom: "50px" }}>
         <h2>Revenue Analytics Dashboard</h2>
         <div className="filters">
@@ -93,7 +121,7 @@ function App() {
 
       <hr style={{ border: "0", borderTop: "1px solid #ddd", margin: "40px 0" }} />
 
-      {/* --- Section 3: Bed Occupancy Reports --- */}
+      {/* --- Section 4: Bed Occupancy Reports --- */}
       <div className="section-block">
         <h2>Bed Occupancy Reports</h2>
         <div className="cards">
