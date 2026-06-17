@@ -2,91 +2,43 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const [query, setQuery] = useState("");
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!query.trim()) {
-      alert("Please enter your appointment request.");
-      return;
-    }
-
-    // FIXED: Removed the undefined 'message' references
-    setLoading(true);
-    setResult(null);
-
-    try {
-      const response = await fetch(
-        `${API_URL}/appointment-assistant`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ query }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setResult(data);
-        setQuery(""); // Optional: clears the textarea after a successful search
-      } else {
-        alert(data.message || "Failed to get suggestions.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Error connecting to server.");
-    } finally {
-      setLoading(false); // FIXED: Kept single, clean loading reset here
-    }
+  const revenueData = {
+    Daily: "₹25,000",
+    Weekly: "₹1,75,000",
+    Monthly: "₹7,50,000",
   };
+
+  const [selected, setSelected] = useState("Daily");
 
   return (
     <div className="container">
-      <h1>AI Appointment Assistant</h1>
+      <h1>Revenue Analytics Dashboard</h1>
 
-      {/* FIXED: Added missing opening form tag */}
-      <form onSubmit={handleSubmit}>
-        <textarea
-          rows="5"
-          placeholder="Example: I need a heart specialist next week"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Finding..." : "Find Appointment"}
+      <div className="filters">
+        <button onClick={() => setSelected("Daily")}>
+          Daily
         </button>
-      </form>
 
-      {result && (
-        <div className="summary-box">
-          <h2>Suggested Department</h2>
-          <p>{result.department}</p>
+        <button onClick={() => setSelected("Weekly")}>
+          Weekly
+        </button>
 
-          <h2>Available Doctors</h2>
-          <ul>
-            {/* Added optional chaining (?.) to prevent crashes if arrays are empty */}
-            {result.doctors?.map((doctor, index) => (
-              <li key={index}>{doctor}</li>
-            ))}
-          </ul>
+        <button onClick={() => setSelected("Monthly")}>
+          Monthly
+        </button>
+      </div>
 
-          <h2>Available Slots</h2>
-          <ul>
-            {result.slots?.map((slot, index) => (
-              <li key={index}>{slot}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="revenue-card">
+        <h2>{selected} Revenue</h2>
+        <p>{revenueData[selected]}</p>
+      </div>
+
+      <div className="chart-box">
+        <h2>Revenue Chart</h2>
+        <div className="bar daily"></div>
+        <div className="bar weekly"></div>
+        <div className="bar monthly"></div>
+      </div>
     </div>
   );
 }
