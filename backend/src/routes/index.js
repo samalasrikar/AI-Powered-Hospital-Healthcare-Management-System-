@@ -14,6 +14,7 @@ const labDashboardRoutes = require('./labDashboardRoutes');
 const labWorkflowRoutes = require('./labWorkflowRoutes');
 const expiryTrackingRoutes = require('./expiryTrackingRoutes');
 const aiRoutes = require('./aiRoutes');
+const symptomAnalyzerRoutes = require('./symptomAnalyzerRoutes');
 const router = express.Router();
 const emrSummarizerRoutes = require('./emrSummarizerRoutes');
 router.get('/health', (req, res) => {
@@ -40,4 +41,5 @@ router.use('/lab-workflow', labWorkflowRoutes);
 router.use('/expiry-tracking', expiryTrackingRoutes);
 router.use('/ai', aiRoutes);
 router.use('/emr-summarizer', emrSummarizerRoutes);
+router.use('/symptom-analyzer', symptomAnalyzerRoutes);
 module.exports = router;
