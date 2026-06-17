@@ -15,10 +15,13 @@ const labWorkflowRoutes = require('./labWorkflowRoutes');
 const expiryTrackingRoutes = require('./expiryTrackingRoutes');
 const aiRoutes = require('./aiRoutes');
 const symptomAnalyzerRoutes = require('./symptomAnalyzerRoutes');
-const router = express.Router();
 const prescriptionBotRoutes = require('./prescriptionBotRoutes');
 const emrSummarizerRoutes = require('./emrSummarizerRoutes');
 const operationsAnalyticsRoutes = require('./operationsAnalyticsRoutes');
+const appointmentAssistantRoutes = require("./appointmentAssistantRoutes");
+
+const router = express.Router();
+
 router.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -27,7 +30,6 @@ router.get('/health', (req, res) => {
 });
 
 // Register feature routes
-
 router.use('/upload', uploadRoutes);
 router.use('/auth', authRoutes);
 router.use('/staff', staffRoutes);
@@ -45,8 +47,11 @@ router.use('/ai', aiRoutes);
 router.use('/prescription-bot', prescriptionBotRoutes);
 router.use('/emr-summarizer', emrSummarizerRoutes);
 router.use('/symptom-analyzer', symptomAnalyzerRoutes);
-router.use(
-  '/operations-analytics',
-  operationsAnalyticsRoutes
-);
+
+// Operations Analytics Endpoint
+router.use('/operations-analytics', operationsAnalyticsRoutes);
+
+// Appointment Assistant Endpoint
+router.use('/appointment-assistant', appointmentAssistantRoutes);
+
 module.exports = router;
