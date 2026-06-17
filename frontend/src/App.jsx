@@ -1,85 +1,71 @@
 import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [medicalRecord, setMedicalRecord] = useState("");
+  const [report, setReport] = useState("");
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const generateSummary = async () => {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!report.trim()) {
+      alert("Please enter a medical report.");
+      return;
+    }
+
+    setLoading(true);
+    setSummary("");
+
     try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch(
-        "http://localhost:5000/api/emr-summarizer",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ medicalRecord }),
-        }
-      );
+      const response = await fetch(`${API_URL}/emr-summarizer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          report,
+        }),
+      });
 
       const data = await response.json();
 
-      if (!data.success) {
-        throw new Error(data.message || "Summary generation failed");
+      if (response.ok) {
+        setSummary(data.summary || "No summary returned.");
+      } else {
+        setSummary(data.message || "Failed to generate summary.");
       }
-
-      setSummary(data.summary);
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error(error);
+      setSummary("Error connecting to server.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: "900px", margin: "40px auto", padding: "20px" }}>
-      <h1>Medical Summary Viewer</h1>
+    <div className="container">
+      <h1>AI EMR Summarizer</h1>
 
-      <textarea
-        rows="8"
-        style={{ width: "100%" }}
-        placeholder="Enter patient medical record..."
-        value={medicalRecord}
-        onChange={(e) => setMedicalRecord(e.target.value)}
-      />
+      <form onSubmit={handleSubmit}>
+        <textarea
+          rows="10"
+          placeholder="Paste medical report here..."
+          value={report}
+          onChange={(e) => setReport(e.target.value)}
+        />
 
-      <br />
-      <br />
-
-      <button onClick={generateSummary} disabled={loading}>
-        {loading ? "Generating..." : "Generate Summary"}
-      </button>
-
-      <button
-        onClick={generateSummary}
-        disabled={loading}
-        style={{ marginLeft: "10px" }}
-      >
-        Refresh Summary
-      </button>
-
-      {error && (
-        <div style={{ color: "red", marginTop: "20px" }}>
-          Error: {error}
-        </div>
-      )}
+        <button type="submit" disabled={loading}>
+          {loading ? "Generating..." : "Generate Summary"}
+        </button>
+      </form>
 
       {summary && (
-        <div
-          style={{
-            marginTop: "20px",
-            border: "1px solid #ccc",
-            padding: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <h2>Patient Summary</h2>
-          <pre>{summary}</pre>
+        <div className="summary-box">
+          <h2>Summary</h2>
+          <p>{summary}</p>
         </div>
       )}
     </div>
