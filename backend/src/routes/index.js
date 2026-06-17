@@ -16,6 +16,7 @@ const expiryTrackingRoutes = require('./expiryTrackingRoutes');
 const aiRoutes = require('./aiRoutes');
 const symptomAnalyzerRoutes = require('./symptomAnalyzerRoutes');
 const router = express.Router();
+const prescriptionBotRoutes = require('./prescriptionBotRoutes');
 const emrSummarizerRoutes = require('./emrSummarizerRoutes');
 router.get('/health', (req, res) => {
   res.status(200).json({
@@ -40,6 +41,7 @@ router.use('/lab-dashboard', labDashboardRoutes);
 router.use('/lab-workflow', labWorkflowRoutes);
 router.use('/expiry-tracking', expiryTrackingRoutes);
 router.use('/ai', aiRoutes);
+router.use('/prescription-bot', prescriptionBotRoutes);
 router.use('/emr-summarizer', emrSummarizerRoutes);
 router.use('/symptom-analyzer', symptomAnalyzerRoutes);
 module.exports = router;
