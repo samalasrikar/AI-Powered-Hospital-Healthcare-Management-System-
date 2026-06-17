@@ -19,6 +19,7 @@ const prescriptionBotRoutes = require('./prescriptionBotRoutes');
 const emrSummarizerRoutes = require('./emrSummarizerRoutes');
 const operationsAnalyticsRoutes = require('./operationsAnalyticsRoutes');
 const appointmentAssistantRoutes = require("./appointmentAssistantRoutes");
+const revenueAnalyticsRoutes = require('./revenueAnalyticsRoutes');
 
 const router = express.Router();
 
@@ -47,11 +48,9 @@ router.use('/ai', aiRoutes);
 router.use('/prescription-bot', prescriptionBotRoutes);
 router.use('/emr-summarizer', emrSummarizerRoutes);
 router.use('/symptom-analyzer', symptomAnalyzerRoutes);
-
-// Operations Analytics Endpoint
+router.use("/appointment-assistant",appointmentAssistantRoutes);
+router.use('/revenue-analytics',revenueAnalyticsRoutes);
 router.use('/operations-analytics', operationsAnalyticsRoutes);
 
-// Appointment Assistant Endpoint
-router.use('/appointment-assistant', appointmentAssistantRoutes);
 
 module.exports = router;
