@@ -11,8 +11,8 @@ const {
   disableStaff,
 } = require('../controllers/staffController');
 
-// All routes protected; only HospitalAdmin (or SuperAdmin) can manage staff
-router.use(protect, authorizeRoles('HospitalAdmin'));
+// All routes protected; HospitalAdmin and SuperAdmin can manage staff
+router.use(protect, authorizeRoles('HospitalAdmin', 'SuperAdmin'));
 
 router.post('/',auditLogger('CREATE', 'Staff'),createStaff);
 router.get('/', listStaff);

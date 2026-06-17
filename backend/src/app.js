@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 
 
 const routes = require('./routes');
@@ -31,6 +32,8 @@ app.use(
     origin: [
       'http://localhost:3000',
       'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
       process.env.FRONTEND_URL
     ],
     credentials: true,
@@ -39,17 +42,24 @@ app.use(
 
 /*
 |--------------------------------------------------------------------------
-| Prevent NoSQL Injection
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
 | Body Parser
 |--------------------------------------------------------------------------
 */
 app.use(express.json());
+
+/*
+|--------------------------------------------------------------------------
+| Prevent NoSQL Injection
+| Express 5 makes req.query a read-only getter, so mongoSanitize() middleware
+| crashes when it tries to overwrite it. We call mongoSanitize.sanitize()
+| directly on req.body and req.params only — safe in all Express versions.
+|--------------------------------------------------------------------------
+*/
+app.use((req, _res, next) => {
+  if (req.body) req.body = mongoSanitize.sanitize(req.body);
+  if (req.params) req.params = mongoSanitize.sanitize(req.params);
+  next();
+});
 
 /*
 |--------------------------------------------------------------------------

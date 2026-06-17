@@ -8,12 +8,19 @@ const {
   createHospital,
   getHospitals,
   getHospitalById,
+  updateHospital,
+  toggleHospitalStatus,
+  getGlobalAnalytics,
 } = require('../controllers/hospitalController');
 
+// All hospital routes — SuperAdmin only
 router.use(protect, authorizeRoles('SuperAdmin'));
 
-router.post('/', createHospital);
-router.get('/', getHospitals);
-router.get('/:id', getHospitalById);
+router.get('/analytics/global', getGlobalAnalytics);   // global stats
+router.get('/', getHospitals);                          // list all
+router.post('/', createHospital);                       // create
+router.get('/:id', getHospitalById);                   // get one
+router.patch('/:id', updateHospital);                  // update details
+router.patch('/:id/status', toggleHospitalStatus);     // activate/deactivate
 
 module.exports = router;
