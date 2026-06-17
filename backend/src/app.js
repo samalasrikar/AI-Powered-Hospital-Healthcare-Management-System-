@@ -31,6 +31,7 @@ app.use(
     origin: [
       'http://localhost:3000',
       'http://localhost:5173',
+      process.env.FRONTEND_URL
     ],
     credentials: true,
   })
@@ -65,6 +66,14 @@ const apiLimiter = rateLimit({
 });
 
 app.use('/api', apiLimiter);
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    project: 'AI Powered Hospital Healthcare Management System',
+    status: 'Running'
+  });
+});
 
 app.use('/api', routes);
 
