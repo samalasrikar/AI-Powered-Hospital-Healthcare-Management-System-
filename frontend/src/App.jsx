@@ -4,121 +4,89 @@ import "./App.css";
 function App() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const [prescription, setPrescription] = useState(
-    "Paracetamol 500mg twice daily"
-  );
-
-  const [message, setMessage] = useState("");
-
-  const [messages, setMessages] = useState([
-    {
-      sender: "bot",
-      text: "Hello! Ask me anything about your prescription.",
-    },
-  ]);
-
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSend = async () => {
-    if (!message.trim()) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const userMessage = {
-      sender: "user",
-      text: message,
-    };
+    if (!query.trim()) {
+      alert("Please enter your appointment request.");
+      return;
+    }
 
-    setMessages((prev) => [...prev, userMessage]);
-
-    const currentQuestion = message;
-    setMessage("");
+    // FIXED: Removed the undefined 'message' references
     setLoading(true);
+    setResult(null);
 
     try {
       const response = await fetch(
-        `${API_URL}/prescription-bot`,
+        `${API_URL}/appointment-assistant`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            prescription,
-            question: currentQuestion,
-          }),
+          body: JSON.stringify({ query }),
         }
       );
 
       const data = await response.json();
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "bot",
-          text:
-            data.explanation ||
-            data.response ||
-            "No response received.",
-        },
-      ]);
+      if (response.ok) {
+        setResult(data);
+        setQuery(""); // Optional: clears the textarea after a successful search
+      } else {
+        alert(data.message || "Failed to get suggestions.");
+      }
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "bot",
-          text: "Unable to connect to server.",
-        },
-      ]);
+      console.error(error);
+      alert("Error connecting to server.");
+    } finally {
+      setLoading(false); // FIXED: Kept single, clean loading reset here
     }
-
-    setLoading(false);
   };
 
   return (
     <div className="container">
-      <h1>Prescription Chat Assistant</h1>
+      <h1>AI Appointment Assistant</h1>
 
-      <div className="context-box">
-        <h3>Prescription Context</h3>
-
+      {/* FIXED: Added missing opening form tag */}
+      <form onSubmit={handleSubmit}>
         <textarea
-          rows="4"
-          value={prescription}
-          onChange={(e) => setPrescription(e.target.value)}
-        />
-      </div>
-
-      <div className="chat-box">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.sender}`}
-          >
-            <strong>
-              {msg.sender === "user" ? "You" : "Assistant"}:
-            </strong>{" "}
-            {msg.text}
-          </div>
-        ))}
-
-        {loading && (
-          <div className="message bot">
-            Assistant is typing...
-          </div>
-        )}
-      </div>
-
-      <div className="input-area">
-        <input
-          type="text"
-          placeholder="Ask about your prescription..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          rows="5"
+          placeholder="Example: I need a heart specialist next week"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
 
-        <button onClick={handleSend}>
-          Send
+        <button type="submit" disabled={loading}>
+          {loading ? "Finding..." : "Find Appointment"}
         </button>
-      </div>
+      </form>
+
+      {result && (
+        <div className="summary-box">
+          <h2>Suggested Department</h2>
+          <p>{result.department}</p>
+
+          <h2>Available Doctors</h2>
+          <ul>
+            {/* Added optional chaining (?.) to prevent crashes if arrays are empty */}
+            {result.doctors?.map((doctor, index) => (
+              <li key={index}>{doctor}</li>
+            ))}
+          </ul>
+
+          <h2>Available Slots</h2>
+          <ul>
+            {result.slots?.map((slot, index) => (
+              <li key={index}>{slot}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
