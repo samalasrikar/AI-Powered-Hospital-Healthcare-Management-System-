@@ -19,6 +19,7 @@ const router = express.Router();
 const prescriptionBotRoutes = require('./prescriptionBotRoutes');
 const emrSummarizerRoutes = require('./emrSummarizerRoutes');
 const appointmentAssistantRoutes = require("./appointmentAssistantRoutes");
+const revenueAnalyticsRoutes = require('./revenueAnalyticsRoutes');
 router.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -48,5 +49,9 @@ router.use('/symptom-analyzer', symptomAnalyzerRoutes);
 router.use(
   "/appointment-assistant",
   appointmentAssistantRoutes
+);
+router.use(
+  '/revenue-analytics',
+  revenueAnalyticsRoutes
 );
 module.exports = router;
