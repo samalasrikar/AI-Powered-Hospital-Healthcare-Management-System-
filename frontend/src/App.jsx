@@ -1,35 +1,34 @@
 import { useState } from "react";
 
 function App() {
-  const [symptoms, setSymptoms] = useState("");
-  const [result, setResult] = useState("");
+  const [medicalRecord, setMedicalRecord] = useState("");
+  const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const analyzeSymptoms = async () => {
+  const generateSummary = async () => {
     try {
       setLoading(true);
       setError("");
-      setResult("");
 
       const response = await fetch(
-        "http://localhost:5000/api/symptom-analyzer",
+        "http://localhost:5000/api/emr-summarizer",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ symptoms }),
+          body: JSON.stringify({ medicalRecord }),
         }
       );
 
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.message || "Analysis failed");
+        throw new Error(data.message || "Summary generation failed");
       }
 
-      setResult(data.analysis);
+      setSummary(data.summary);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -38,22 +37,30 @@ function App() {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "40px auto", padding: "20px" }}>
-      <h1>AI Symptom Analyzer</h1>
+    <div style={{ maxWidth: "900px", margin: "40px auto", padding: "20px" }}>
+      <h1>Medical Summary Viewer</h1>
 
       <textarea
-        rows="6"
+        rows="8"
         style={{ width: "100%" }}
-        placeholder="Enter symptoms (e.g. fever, cough, headache)"
-        value={symptoms}
-        onChange={(e) => setSymptoms(e.target.value)}
+        placeholder="Enter patient medical record..."
+        value={medicalRecord}
+        onChange={(e) => setMedicalRecord(e.target.value)}
       />
 
       <br />
       <br />
 
-      <button onClick={analyzeSymptoms} disabled={loading}>
-        {loading ? "Analyzing..." : "Analyze Symptoms"}
+      <button onClick={generateSummary} disabled={loading}>
+        {loading ? "Generating..." : "Generate Summary"}
+      </button>
+
+      <button
+        onClick={generateSummary}
+        disabled={loading}
+        style={{ marginLeft: "10px" }}
+      >
+        Refresh Summary
       </button>
 
       {error && (
@@ -62,13 +69,17 @@ function App() {
         </div>
       )}
 
-      {result && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Analysis Result</h2>
-          <pre>{result}</pre>
-          <p>
-            <strong>Disclaimer:</strong> This is not a medical diagnosis.
-          </p>
+      {summary && (
+        <div
+          style={{
+            marginTop: "20px",
+            border: "1px solid #ccc",
+            padding: "20px",
+            borderRadius: "8px",
+          }}
+        >
+          <h2>Patient Summary</h2>
+          <pre>{summary}</pre>
         </div>
       )}
     </div>
