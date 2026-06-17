@@ -1,0 +1,43 @@
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+select,
+textarea,
+button {
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 95%;
+  }
+}
