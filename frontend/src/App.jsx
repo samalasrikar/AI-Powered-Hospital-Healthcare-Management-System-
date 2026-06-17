@@ -9,13 +9,26 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Admin Dashboard Metrics Data
+  // From develop: Admin Dashboard Metrics Data
   const metrics = [
     { title: "Total Patients", value: "1,245" },
     { title: "Daily Appointments", value: "186" },
     { title: "Revenue", value: "$52,000" },
     { title: "Active Doctors", value: "48" },
     { title: "Bed Occupancy", value: "82%" },
+  ];
+
+  // From feature/ai-insights-dashboard: Data Blocks
+  const insights = [
+    { title: "Highest Patient Load", value: "Cardiology" },
+    { title: "Peak Appointment Hours", value: "10 AM - 1 PM" },
+    { title: "Revenue Trend", value: "-12% This Month" },
+  ];
+
+  const recommendations = [
+    "Increase staffing during peak appointment hours.",
+    "Promote preventive care programs.",
+    "Optimize scheduling in Cardiology department.",
   ];
 
   const handleSubmit = async (e) => {
@@ -56,7 +69,7 @@ function App() {
 
   return (
     <div className="container">
-      {/* Admin Dashboard Section */}
+      {/* 1. Admin Dashboard Section */}
       <h1>Hospital Administration Dashboard</h1>
       <div className="dashboard-grid">
         {metrics.map((metric, index) => (
@@ -69,7 +82,37 @@ function App() {
 
       <hr style={{ margin: "40px 0", border: "0", borderTop: "1px solid var(--border)" }} />
 
-      {/* AI Assistant Section */}
+      {/* 2. AI Insights Dashboard Section */}
+      <h2>AI Analytical Insights</h2>
+      <div className="cards">
+        {insights.map((item, index) => (
+          <div className="card" key={index}>
+            <h3>{item.title}</h3>
+            <p>{item.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="trend-box">
+        <h3>Trend Analysis</h3>
+        <p>
+          Patient visits increased during morning hours while revenue showed a slight
+          decrease compared to last month.
+        </p>
+      </div>
+
+      <div className="recommendation-box">
+        <h3>AI Automated Recommendations</h3>
+        <ul>
+          {recommendations.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <hr style={{ margin: "40px 0", border: "0", borderTop: "1px solid var(--border)" }} />
+
+      {/* 3. AI Assistant Section */}
       <h2>AI Appointment Assistant</h2>
       <form onSubmit={handleSubmit}>
         <textarea
