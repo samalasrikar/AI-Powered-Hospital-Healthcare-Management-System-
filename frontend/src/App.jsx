@@ -4,9 +4,19 @@ import "./App.css";
 function App() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // State for AI Appointment Assistant
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Admin Dashboard Metrics Data
+  const metrics = [
+    { title: "Total Patients", value: "1,245" },
+    { title: "Daily Appointments", value: "186" },
+    { title: "Revenue", value: "$52,000" },
+    { title: "Active Doctors", value: "48" },
+    { title: "Bed Occupancy", value: "82%" },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,27 +26,23 @@ function App() {
       return;
     }
 
-    // FIXED: Removed the undefined 'message' references
     setLoading(true);
     setResult(null);
 
     try {
-      const response = await fetch(
-        `${API_URL}/appointment-assistant`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ query }),
-        }
-      );
+      const response = await fetch(`${API_URL}/appointment-assistant`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
         setResult(data);
-        setQuery(""); // Optional: clears the textarea after a successful search
+        setQuery(""); 
       } else {
         alert(data.message || "Failed to get suggestions.");
       }
@@ -44,15 +50,27 @@ function App() {
       console.error(error);
       alert("Error connecting to server.");
     } finally {
-      setLoading(false); // FIXED: Kept single, clean loading reset here
+      setLoading(false);
     }
   };
 
   return (
     <div className="container">
-      <h1>AI Appointment Assistant</h1>
+      {/* Admin Dashboard Section */}
+      <h1>Hospital Administration Dashboard</h1>
+      <div className="dashboard-grid">
+        {metrics.map((metric, index) => (
+          <div className="metric-card" key={index}>
+            <h3>{metric.title}</h3>
+            <p>{metric.value}</p>
+          </div>
+        ))}
+      </div>
 
-      {/* FIXED: Added missing opening form tag */}
+      <hr style={{ margin: "40px 0", border: "0", borderTop: "1px solid var(--border)" }} />
+
+      {/* AI Assistant Section */}
+      <h2>AI Appointment Assistant</h2>
       <form onSubmit={handleSubmit}>
         <textarea
           rows="5"
@@ -73,7 +91,6 @@ function App() {
 
           <h2>Available Doctors</h2>
           <ul>
-            {/* Added optional chaining (?.) to prevent crashes if arrays are empty */}
             {result.doctors?.map((doctor, index) => (
               <li key={index}>{doctor}</li>
             ))}
