@@ -2,13 +2,35 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  // --- Bed Occupancy Logic (feature branch) ---
+  // --- 1. Department Performance Data (feature branch) ---
+  const departments = [
+    {
+      name: "Cardiology",
+      patients: 320,
+      revenue: "₹8,50,000",
+      waitTime: "15 min",
+    },
+    {
+      name: "Neurology",
+      patients: 240,
+      revenue: "₹6,20,000",
+      waitTime: "20 min",
+    },
+    {
+      name: "Orthopedics",
+      patients: 280,
+      revenue: "₹7,10,000",
+      waitTime: "12 min",
+    },
+  ];
+
+  // --- 2. Bed Occupancy Logic (develop branch) ---
   const totalBeds = 200;
   const occupiedBeds = 164;
   const availableBeds = totalBeds - occupiedBeds;
   const occupancyPercentage = Math.round((occupiedBeds / totalBeds) * 100);
 
-  // --- Revenue Data Logic (develop branch) ---
+  // --- 3. Revenue Data Logic (develop branch) ---
   const revenueData = {
     Daily: "₹25,000",
     Weekly: "₹1,75,000",
@@ -21,7 +43,33 @@ function App() {
     <div className="container">
       <h1>Hospital Management Dashboard</h1>
 
-      {/* --- Section 1: Revenue Analytics --- */}
+      {/* --- Section 1: Department Performance Reports --- */}
+      <div className="section-block" style={{ marginBottom: "50px" }}>
+        <h2>Department Performance Reports</h2>
+
+        <div className="department-grid">
+          {departments.map((dept, index) => (
+            <div className="department-card" key={index}>
+              <h2>{dept.name}</h2>
+              <p>Patient Volume: {dept.patients}</p>
+              <p>Revenue: {dept.revenue}</p>
+              <p>Average Wait Time: {dept.waitTime}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Updated classes to avoid styling overlap with the revenue chart */}
+        <div className="department-chart-box">
+          <h2>Department Comparison</h2>
+          <div className="dept-bar cardiology">Cardiology</div>
+          <div className="dept-bar neurology">Neurology</div>
+          <div className="dept-bar ortho">Orthopedics</div>
+        </div>
+      </div>
+
+      <hr style={{ border: "0", borderTop: "1px solid #ddd", margin: "40px 0" }} />
+
+      {/* --- Section 2: Revenue Analytics --- */}
       <div className="section-block" style={{ marginBottom: "50px" }}>
         <h2>Revenue Analytics Dashboard</h2>
         <div className="filters">
@@ -45,7 +93,7 @@ function App() {
 
       <hr style={{ border: "0", borderTop: "1px solid #ddd", margin: "40px 0" }} />
 
-      {/* --- Section 2: Bed Occupancy Reports --- */}
+      {/* --- Section 3: Bed Occupancy Reports --- */}
       <div className="section-block">
         <h2>Bed Occupancy Reports</h2>
         <div className="cards">

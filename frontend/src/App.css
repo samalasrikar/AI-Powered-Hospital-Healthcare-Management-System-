@@ -5,7 +5,59 @@
   padding: 20px;
 }
 
-/* --- Bed Occupancy Component (Feature Branch) --- */
+/* ==========================================================================
+   1. Department Performance Feature (feature/department-performance-reports)
+   ========================================================================== */
+.department-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.department-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Styled specifically to avoid collision with revenue charts */
+.department-chart-box {
+  margin-top: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.dept-bar {
+  height: 35px;
+  margin: 12px 0;
+  border-radius: 5px;
+  color: white;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.cardiology {
+  width: 90%;
+  background: #2563eb;
+}
+
+.neurology {
+  width: 70%;
+  background: #1d4ed8;
+}
+
+.ortho {
+  width: 80%;
+  background: #3b82f6;
+}
+
+/* ==========================================================================
+   2. Bed Occupancy & Revenue Dashboard Components (develop)
+   ========================================================================== */
+
+/* --- Bed Occupancy Component --- */
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -44,7 +96,7 @@
   background: #2563eb;
 }
 
-/* --- Revenue & Filters Component (Develop Branch) --- */
+/* --- Revenue & Filters Component --- */
 .filters {
   display: flex;
   gap: 10px;
