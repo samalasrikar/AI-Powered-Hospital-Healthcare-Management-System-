@@ -4,7 +4,16 @@
   padding: 20px;
 }
 
-/* From feature/ai-insights-dashboard - upgraded with auto-fit for responsive layout */
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* From feature/ai-insights-dashboard */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -45,7 +54,7 @@
   padding-left: 20px;
 }
 
-/* From develop */
+/* From develop - Dashboard layout */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -72,7 +81,11 @@
   margin: 0;
 }
 
-textarea {
+/* Unified Form input selectors with textarea from develop */
+input,
+select,
+textarea,
+button {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
@@ -80,8 +93,19 @@ textarea {
 }
 
 button {
+  width: auto;
   padding: 12px 20px;
   cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
 }
 
 .summary-box {
@@ -94,4 +118,11 @@ button {
 
 .summary-box ul {
   padding-left: 20px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 95%;
+    margin: 20px auto;
+  }
 }
