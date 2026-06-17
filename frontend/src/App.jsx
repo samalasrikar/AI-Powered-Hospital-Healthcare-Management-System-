@@ -16,6 +16,8 @@ function App() {
       return;
     }
 
+    const currentQuestion = message;
+    setMessage("");
     setLoading(true);
     setResult(null);
 
@@ -46,13 +48,14 @@ function App() {
     } finally {
       setLoading(false);
     }
+
+    setLoading(false);
   };
 
   return (
     <div className="container">
       <h1>AI Appointment Assistant</h1>
 
-      <form onSubmit={handleSubmit}>
         <textarea
           rows="5"
           placeholder="Example: I need a heart specialist next week"
