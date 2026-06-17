@@ -16,8 +16,7 @@ function App() {
       return;
     }
 
-    const currentQuestion = message;
-    setMessage("");
+    // FIXED: Removed the undefined 'message' references
     setLoading(true);
     setResult(null);
 
@@ -29,9 +28,7 @@ function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            query,
-          }),
+          body: JSON.stringify({ query }),
         }
       );
 
@@ -39,6 +36,7 @@ function App() {
 
       if (response.ok) {
         setResult(data);
+        setQuery(""); // Optional: clears the textarea after a successful search
       } else {
         alert(data.message || "Failed to get suggestions.");
       }
@@ -46,16 +44,16 @@ function App() {
       console.error(error);
       alert("Error connecting to server.");
     } finally {
-      setLoading(false);
+      setLoading(false); // FIXED: Kept single, clean loading reset here
     }
-
-    setLoading(false);
   };
 
   return (
     <div className="container">
       <h1>AI Appointment Assistant</h1>
 
+      {/* FIXED: Added missing opening form tag */}
+      <form onSubmit={handleSubmit}>
         <textarea
           rows="5"
           placeholder="Example: I need a heart specialist next week"
@@ -75,14 +73,15 @@ function App() {
 
           <h2>Available Doctors</h2>
           <ul>
-            {result.doctors.map((doctor, index) => (
+            {/* Added optional chaining (?.) to prevent crashes if arrays are empty */}
+            {result.doctors?.map((doctor, index) => (
               <li key={index}>{doctor}</li>
             ))}
           </ul>
 
           <h2>Available Slots</h2>
           <ul>
-            {result.slots.map((slot, index) => (
+            {result.slots?.map((slot, index) => (
               <li key={index}>{slot}</li>
             ))}
           </ul>
