@@ -150,7 +150,7 @@ const getGlobalAnalytics = async (req, res, next) => {
             as: 'hospital',
           },
         },
-        { $unwind: { path: '$hospital', preserveNullAndEmpty: true } },
+        { $unwind: { path: '$hospital', preserveNullAndEmptyArrays: true } },
         {
           $project: {
             hospitalName: '$hospital.name',
@@ -178,7 +178,12 @@ const getGlobalAnalytics = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    console.error("Global Analytics Error:", error);
+    res.status(500).json({
+     success: false,
+     message: error.message,
+     stack: error.stack,
+  });
   }
 };
 
