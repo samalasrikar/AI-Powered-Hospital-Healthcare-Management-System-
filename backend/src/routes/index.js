@@ -21,12 +21,12 @@ const operationsAnalyticsRoutes = require('./operationsAnalyticsRoutes');
 const appointmentAssistantRoutes = require("./appointmentAssistantRoutes");
 const revenueAnalyticsRoutes = require('./revenueAnalyticsRoutes');
 const patientRoutes = require('./patientRoutes');
-const patientRoutes = require('./patientRoutes');
+
 const medicineDispensingRoutes = require('./medicineDispensingRoutes');
 const supplierRoutes = require('./supplierRoutes');
+const paymentRoutes = require('./paymentRoutes');
+const router = express.Router();
 
-const router = express.Router();
-const router = express.Router();
 
 router.get('/health', (req, res) => {
   res.status(200).json({
@@ -57,10 +57,10 @@ router.use("/appointment-assistant",appointmentAssistantRoutes);
 router.use('/revenue-analytics',revenueAnalyticsRoutes);
 router.use('/operations-analytics', operationsAnalyticsRoutes);
 router.use('/patients', patientRoutes);
-router.use('/patients', patientRoutes);
+
 router.use('/medicine-dispensing', medicineDispensingRoutes);
 router.use('/suppliers', supplierRoutes);
-
+router.use('/payments', paymentRoutes);
 module.exports = router;
 
-module.exports = router;
+
