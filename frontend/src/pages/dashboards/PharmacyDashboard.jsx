@@ -134,6 +134,44 @@ export default function PharmacyDashboard() {
               </div>
             )}
           </div>
+              
+
+          {/* Supplier Management */}
+          <div className="card">
+            <div className="card-header">
+              <h2 className="card-title">Supplier Management</h2>
+            </div>
+
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Supplier Name</th>
+                    <th>Contact Number</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>MediCare Pharma</td>
+                    <td>9876543210</td>
+                    <td>contact@medicare.com</td>
+                    <td>Hyderabad</td>
+                  </tr>
+
+                  <tr>
+                    <td>HealthPlus Distributors</td>
+                    <td>9123456780</td>
+                    <td>support@healthplus.com</td>
+                    <td>Bangalore</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </main>
       </div>
     </div>
