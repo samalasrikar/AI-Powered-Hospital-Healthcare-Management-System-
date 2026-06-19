@@ -11,7 +11,7 @@ const ROLE_DASHBOARD = {
   Receptionist: '/dashboard/doctor',
   LabTechnician: '/dashboard/lab',
   Pharmacist: '/dashboard/pharmacy',
-  BillingExecutive: '/dashboard/admin',
+  BillingExecutive: '/dashboard/billing',
   Patient: '/dashboard/patient',
 };
 
