@@ -26,7 +26,7 @@ const medicineDispensingRoutes = require('./medicineDispensingRoutes');
 const supplierRoutes = require('./supplierRoutes');
 const paymentRoutes = require('./paymentRoutes');
 const router = express.Router();
-
+const inventoryAlertRoutes = require('./inventoryAlertRoutes');
 
 router.get('/health', (req, res) => {
   res.status(200).json({
@@ -61,6 +61,7 @@ router.use('/discharges', dischargeRoutes);
 router.use('/medicine-dispensing', medicineDispensingRoutes);
 router.use('/suppliers', supplierRoutes);
 router.use('/payments', paymentRoutes);
+router.use('/inventory-alerts', inventoryAlertRoutes);
 module.exports = router;
 
 

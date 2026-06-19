@@ -24,21 +24,26 @@ export default function PharmacyDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
-
+  const [alerts, setAlerts] = useState([]); 
   useEffect(() => {
-    const fetchExpiry = async () => {
-      setLoading(true);
-      try {
-        const { data } = await api.get('/expiry-tracking');
-        setMedicines(data.data || []);
-      } catch {
-        setError('Failed to load expiry tracking data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchExpiry();
-  }, []);
+  const fetchExpiry = async () => {
+    setLoading(true);
+
+    try {
+      const { data } = await api.get('/expiry-tracking');
+      setMedicines(data.data || []);
+
+      const alertRes = await api.get('/inventory-alerts');
+      setAlerts(alertRes.data.data || []);
+    } catch {
+      setError('Failed to load pharmacy data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchExpiry();
+}, []);
 
   const today = new Date();
   const filtered = medicines.filter((m) => {
@@ -134,7 +139,40 @@ export default function PharmacyDashboard() {
               </div>
             )}
           </div>
-              
+              {/* Inventory Alerts */}
+<div className="card">
+  <div className="card-header">
+    <h2 className="card-title">Inventory Alerts</h2>
+  </div>
+
+  <div className="table-wrapper">
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>Alert Type</th>
+          <th>Medicine</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {alerts.length === 0 ? (
+          <tr>
+            <td colSpan="3">No alerts available</td>
+          </tr>
+        ) : (
+          alerts.map((alert, index) => (
+            <tr key={index}>
+              <td>{alert.type}</td>
+              <td>{alert.medicineName}</td>
+              <td>{alert.message}</td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
 
           {/* Supplier Management */}
           <div className="card">
