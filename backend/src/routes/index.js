@@ -21,7 +21,7 @@ const operationsAnalyticsRoutes = require('./operationsAnalyticsRoutes');
 const appointmentAssistantRoutes = require("./appointmentAssistantRoutes");
 const revenueAnalyticsRoutes = require('./revenueAnalyticsRoutes');
 const patientRoutes = require('./patientRoutes');
-
+const medicineDispensingRoutes = require('./medicineDispensingRoutes');
 const router = express.Router();
 
 router.get('/health', (req, res) => {
@@ -53,6 +53,6 @@ router.use("/appointment-assistant",appointmentAssistantRoutes);
 router.use('/revenue-analytics',revenueAnalyticsRoutes);
 router.use('/operations-analytics', operationsAnalyticsRoutes);
 router.use('/patients', patientRoutes);
-
+router.use('/medicine-dispensing', medicineDispensingRoutes);
 
 module.exports = router;
