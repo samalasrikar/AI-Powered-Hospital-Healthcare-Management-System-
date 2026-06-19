@@ -14,7 +14,7 @@ import PharmacyDashboard from './pages/dashboards/PharmacyDashboard';
 import UnauthorizedPage from './pages/shared/UnauthorizedPage';
 import LandingPage from './pages/LandingPage';
 import SuperAdminDashboard from './pages/dashboards/SuperAdminDashboard';
-
+import BillingDashboard from './pages/dashboards/BillingDashboard';
 // Smart redirect: authenticated users go to their role's dashboard
 function DashboardRedirect() {
   const { user } = useAuth();
@@ -103,6 +103,14 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+<Route
+  path="/dashboard/billing/*"
+  element={
+    <ProtectedRoute allowedRoles={['BillingExecutive']}>
+      <BillingDashboard />
+    </ProtectedRoute>
+  }
+/>
 
           {/* Landing page */}
           <Route path="/" element={<LandingPage />} />
