@@ -12,6 +12,7 @@ const {
 const {
   register,
   login,
+  refreshAccessToken,
 } = require('../controllers/authController');
 
 router.post(
@@ -27,6 +28,12 @@ router.post(
   loginValidation,
   validate,
   login
+);
+
+
+router.post(
+  '/refresh-token',
+  refreshAccessToken
 );
 
 router.get('/protected', protect, (req, res) => {
