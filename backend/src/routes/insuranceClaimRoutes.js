@@ -1,20 +1,16 @@
 const express = require("express");
+
 const router = express.Router();
 
 const protect = require("../middlewares/authMiddleware");
 const authorizeRoles = require("../middlewares/roleMiddleware");
 
 const {
-  getPayments,
-  createPayment,
-  updatePaymentStatus,
-} = require("../controllers/paymentController");
-
-router.get(
-  "/",
-  protect,
-  getPayments
-);
+  createClaim,
+  getAllClaims,
+  getClaimById,
+  updateClaimStatus,
+} = require("../controllers/insuranceClaimController");
 
 router.post(
   "/",
@@ -24,18 +20,39 @@ router.post(
     "HospitalAdmin",
     "SuperAdmin"
   ),
-  createPayment
+  createClaim
 );
 
-router.patch(
-  "/:id/status",
+router.get(
+  "/",
   protect,
   authorizeRoles(
     "BillingExecutive",
     "HospitalAdmin",
     "SuperAdmin"
   ),
-  updatePaymentStatus
+  getAllClaims
+);
+
+router.get(
+  "/:id",
+  protect,
+  authorizeRoles(
+    "BillingExecutive",
+    "HospitalAdmin",
+    "SuperAdmin"
+  ),
+  getClaimById
+);
+
+router.put(
+  "/:id/status",
+  protect,
+  authorizeRoles(
+    "HospitalAdmin",
+    "SuperAdmin"
+  ),
+  updateClaimStatus
 );
 
 module.exports = router;

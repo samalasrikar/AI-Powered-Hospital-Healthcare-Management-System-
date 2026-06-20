@@ -27,6 +27,8 @@ const supplierRoutes = require('./supplierRoutes');
 const paymentRoutes = require('./paymentRoutes');
 const router = express.Router();
 const inventoryAlertRoutes = require('./inventoryAlertRoutes');
+const billingRoutes = require("./billingRoutes");
+const insuranceClaimRoutes = require("./insuranceClaimRoutes");
 
 router.get('/health', (req, res) => {
   res.status(200).json({
@@ -36,6 +38,8 @@ router.get('/health', (req, res) => {
 });
 
 // Register feature routes
+router.use("/insurance-claims", insuranceClaimRoutes);
+router.use("/billing", billingRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/auth', authRoutes);
 router.use('/staff', staffRoutes);
