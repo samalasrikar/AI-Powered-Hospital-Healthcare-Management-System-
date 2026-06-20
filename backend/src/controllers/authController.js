@@ -79,6 +79,13 @@ const login = async (req, res, next) => {
       });
     }
 
+    if (user.status !== "Active") {
+      return res.status(403).json({
+        success:false,
+        message:"Account is inactive. Please contact administrator."
+      });
+    }
+
     const isPasswordValid = await user.matchPassword(password);
 
     if (!isPasswordValid) {
@@ -140,7 +147,64 @@ const login = async (req, res, next) => {
   }
 };
 
+const refreshAccessToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: 'Refresh token is required',
+      });
+    }
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    if (user.status !== 'Active') {
+      return res.status(403).json({
+        success: false,
+        message: 'Account is inactive',
+      });
+    }
+
+    const accessToken = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role,
+        hospitalId: user.hospitalId,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h',
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      accessToken,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid refresh token',
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
+  refreshAccessToken,
 };
